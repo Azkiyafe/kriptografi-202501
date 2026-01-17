@@ -1,22 +1,26 @@
 # Laporan Praktikum Kriptografi
-Minggu ke-: X  
-Topik: [judul praktikum]  
-Nama: [Nama Mahasiswa]  
-NIM: [NIM Mahasiswa]  
-Kelas: [Kelas]  
+Minggu ke-: X3  
+Topik: Modular Math
+Nama: Azkiya Fe Sabella  
+NIM: 230202802
+Kelas: 5 IKKA 
 
 ---
 
 ## 1. Tujuan
-(Tuliskan tujuan pembelajaran praktikum sesuai modul.)
+Setelah mengikuti praktikum ini, mahasiswa diharapkan mampu:
 
----
+1. Menyelesaikan operasi aritmetika modular (penjumlahan, pengurangan, perkalian, dan eksponensiasi).
+2. Menentukan bilangan prima dan menghitung GCD (Greatest Common Divisor) menggunakan algoritma Euclidean.
+3. Menerapkan Extended Euclidean Algorithm untuk mencari invers modular.
+4. Menerapkan logaritma diskrit sederhana dalam simulasi kriptografi.
 
 ## 2. Dasar Teori
-(Ringkas teori relevan (cukup 2–3 paragraf).  
-Contoh: definisi cipher klasik, konsep modular aritmetika, dll.  )
+Aritmetika Modular adalah sistem perhitungan yang menggunakan operasi modulo, di mana hasil operasi "dibungkus" dalam rentang tertentu (0 hingga n-1). Konsep ini fundamental dalam kriptografi modern seperti RSA dan Diffie-Hellman.
 
----
+GCD (Greatest Common Divisor) adalah bilangan bulat positif terbesar yang dapat membagi habis dua bilangan. Algoritma Euclidean digunakan untuk mencari GCD secara efisien dengan kompleksitas waktu O(log min(a,b)). Extended Euclidean Algorithm memperluas konsep ini untuk menemukan koefisien Bézout dan invers modular.
+
+Logaritma Diskrit adalah masalah menemukan nilai x dalam persamaan a^x ≡ b (mod n). Masalah ini menjadi dasar keamanan dalam protokol kriptografi seperti Diffie-Hellman dan ElGamal, karena sulit diselesaikan untuk modulus yang besar meskipun mudah diverifikasi.
 
 ## 3. Alat dan Bahan
 (- Python 3.x  
@@ -39,36 +43,91 @@ Contoh format:
 (Salin kode program utama yang dibuat atau dimodifikasi.  
 Gunakan blok kode:
 
-```python
-# contoh potongan kode
-def encrypt(text, key):
-    return ...
-```
+"""
+Aritmatika Modular
+"""
+def mod_add(a: int, b:int, n:int) -> int: return (a + b) % n
+def mod_sub(a: int, b:int, n:int) -> int: return (a - b) % n
+def mod_mul(a: int, b:int, n:int) -> int: return (a * b) % n
+def mod_expo(base: int, exp: int, n:int) -> int: return pow(base, exp, n)
+
+print("Aritmatika Modular: ")
+print(f"7 + 5 mod 12 = {mod_add(7, 5, 12)}")
+print(f"7 - 5 mod 12 = {mod_sub(7, 5, 12)}")
+print(f"7 * 5 mod 12 = {mod_mul(7, 5, 12)}")
+print(f"7 ^ 128 mod 13 = {mod_expo(7, 128, 13)}")
+
+
+"""
+GCD & Algoritma Euclidean
+"""
+print("-"*20)
+print("Greatest Common Divisor: ")
+def gcd(a:int, b:int) -> int:
+    while b != 0:
+        a, b = b, a % b
+    return a
+
+print(f"gcd(54, 24) = {gcd(54, 24)}")
+
+"""
+Extended Euclidean Algorithm
+"""
+print("-"*20)
+print("Extended Euclidean Algorithm: ")
+def egcd(a:int, b:int) -> int:
+    if a == 0:
+        return b, 0, 1
+    g, x1, y1, = egcd(b % a, a)
+    return g, y1 - (b // a) * x1, x1
+
+def modinv(a:int, n:int) -> int:
+    g, x, _ = egcd(a, n)
+    if g != 1:
+        return None
+    return x % n
+
+print(f"Invers 3 mod 11 = {modinv(3, 11)}")
+
+
+"""
+Logaritma Diskrit
+"""
+print("-"*20)
+print("Logaritma Diskrit: ")
+def discrete_log(a:int, b:int, n:int) -> int:
+    for x in range(n):
+        if pow(a, x, n) == b:
+            return x
+    return None
+
+print(f"3^x = 4 (mod 7), x = {discrete_log(3, 4, 7)}")
 )
 
 ---
 
 ## 6. Hasil dan Pembahasan
-(- Lampirkan screenshot hasil eksekusi program (taruh di folder `screenshots/`).  
-- Berikan tabel atau ringkasan hasil uji jika diperlukan.  
-- Jelaskan apakah hasil sesuai ekspektasi.  
-- Bahas error (jika ada) dan solusinya. 
 
-Hasil eksekusi program Caesar Cipher:
+Hasil eksekusi program Modular Math:
 
-![Hasil Eksekusi](screenshots/output.png)
-![Hasil Input](screenshots/input.png)
-![Hasil Output](screenshots/output.png)
-)
+![alt text](image.png)
+![alt text](image-1.png)
 
----
 
 ## 7. Jawaban Pertanyaan
-(Jawab pertanyaan diskusi yang diberikan pada modul.  
-- Pertanyaan 1: …  
-- Pertanyaan 2: …  
-)
----
+1. Apa peran aritmetika modular dalam kriptografi modern?
+
+Aritmetika modular adalah fondasi matematika dalam kriptografi modern. Dalam algoritma RSA, operasi enkripsi (c = m^e mod n) dan dekripsi (m = c^d mod n) menggunakan eksponensiasi modular. Dalam Diffie-Hellman, pertukaran kunci menggunakan operasi a^x mod p. Sifat "one-way" dari operasi modular (mudah dihitung tapi sulit dibalik) menjadi basis keamanan kriptografi kunci publik.
+
+2. Mengapa invers modular penting dalam algoritma kunci publik (misalnya RSA)?
+
+Dalam RSA, invers modular digunakan untuk menghitung kunci privat (d) dari kunci publik (e) dengan persamaan e × d ≡ 1 (mod φ(n)). Tanpa invers modular, proses dekripsi tidak mungkin dilakukan. Keberadaan invers modular juga memastikan bahwa e dan φ(n) adalah coprime (gcd = 1), yang merupakan syarat keamanan RSA.
+
+3. Apa tantangan utama dalam menyelesaikan logaritma diskrit untuk modulus besar?
+
+Tantangan utama adalah kompleksitas komputasi yang eksponensial terhadap ukuran modulus. Algoritma brute force seperti yang diimplementasikan memiliki kompleksitas O(n), yang tidak feasible untuk modulus besar (misalnya 2048-bit). Algoritma terbaik saat ini seperti Index Calculus masih memerlukan waktu sub-eksponensial, membuat logaritma diskrit tetap menjadi masalah sulit yang menjadi dasar keamanan protokol kriptografi modern.
+
+
 
 ## 8. Kesimpulan
 (Tuliskan kesimpulan singkat (2–3 kalimat) berdasarkan percobaan.  )
@@ -88,7 +147,7 @@ Contoh:
 Contoh:
 ```
 commit abc12345
-Author: Nama Mahasiswa <email>
+Author:Azkiya Fe Sabella (azkiyafesabella14@gmail.com)
 Date:   2025-09-20
 
     week2-cryptosystem: implementasi Caesar Cipher dan laporan )
