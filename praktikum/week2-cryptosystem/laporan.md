@@ -26,18 +26,16 @@ Salah satu contoh algoritma kriptografi klasik adalah Caesar Cipher. Algoritma i
 ---
 
 ## 4. Langkah Percobaan
-(Tuliskan langkah yang dilakukan sesuai instruksi.  
-Contoh format:
-1. Membuat file `caesar_cipher.py` di folder `praktikum/week2-cryptosystem/src/`.
-2. Menyalin kode program dari panduan praktikum.
-3. Menjalankan program dengan perintah `python caesar_cipher.py`.)
-
----
+1. Membuat struktur direktori `praktikum/week2-cryptosystem/` yang berisi folder `src`, `screenshots`, dan file `laporan.md`.
+2. Membuat diagram yang mengilustrasikan alur kerja kriptosistem dan menyimpannya di `screenshots/diagram_kriptosistem.png`.
+3. Mengimplementasikan algoritma Caesar Cipher dalam file Python `src/caesar_chiper.py`.
+4. Menjalankan program untuk melakukan enkripsi dan dekripsi pada sebuah teks yang berisi nama dan NIM.
+5. Mengambil screenshot hasil eksekusi program dan menyimpannya di folder `screenshots/`.
+6. Melengkapi `laporan.md` dengan penjelasan, diagram, source code, hasil percobaan, dan jawaban pertanyaan diskusi.
+7. Melakukan commit ke repositori GitHub dengan pesan `week2-cryptosystem`.
 
 ## 5. Source Code
-(Salin kode program utama yang dibuat atau dimodifikasi)  
-Gunakan blok kode:
-
+```python
 def caesar_chiper(plainchiper: str, key: int, mode: str) -> str:
     """
     parameter:
@@ -60,7 +58,7 @@ def caesar_chiper(plainchiper: str, key: int, mode: str) -> str:
 
 
 if __name__ == "__main__":
-    text = "Azkiya Fe Sabella 230202802"
+    text = "Bagus Alfiyan Yusuf 230202804"
     key = 6
 
     enc_cc = caesar_chiper(plainchiper=text, key=key, mode="enc")
@@ -69,7 +67,7 @@ if __name__ == "__main__":
     print(f"Text Asli: {text}")
     print(f"Text Enkripsi: {enc_cc}")
     print(f"Text Dekripsi: {dec_cc}")
-
+```
 ## 6. Hasil dan Pembahasan
 Hasil ini sesuai dengan ekspektasi. Program berhasil mengubah plaintext menjadi ciphertext yang tidak dapat dibaca, dan kemudian mengembalikannya ke bentuk semula dengan proses dekripsi. Karakter angka dan spasi tidak berubah karena logika program hanya memproses karakter alfabet. 
 

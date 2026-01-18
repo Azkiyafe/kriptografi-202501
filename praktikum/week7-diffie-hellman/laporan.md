@@ -12,31 +12,36 @@ Setelah mengikuti praktikum ini, mahasiswa diharapkan mampu:
 3. Menganalisis potensi serangan pada protokol - Diffie-Hellman (termasuk serangan Man-in-the-Middle / MITM).
 
 ## 2. Dasar Teori
-1. Konsep Dasar
+### 2.1 Konsep Dasar
 Diffie-Hellman Key Exchange adalah protokol kriptografi yang memungkinkan dua pihak untuk membuat kunci rahasia bersama melalui saluran komunikasi publik yang tidak aman. Protokol ini ditemukan oleh Whitfield Diffie dan Martin Hellman pada tahun 1976 dan menjadi dasar bagi banyak protokol keamanan modern seperti TLS/SSL.
 
-2. Mekanisme Matematis
+### 2.2 Mekanisme Matematis
 Protokol ini bekerja berdasarkan kesulitan matematis dalam memecahkan masalah logaritma diskrit. Langkah-langkahnya sebagai berikut:
 
-Parameter Publik: Alice dan Bob menyepakati bilangan prima besar 
-p dan generator g secara publik.
+1. **Parameter Publik**: Alice dan Bob menyepakati bilangan prima besar $p$ dan generator $g$ secara publik.
 
-Pembangkitan Kunci Privat:
-Alice memilih kunci privat acak a dimana 1 < a < p
-Bob memilih kunci privat acak b dimana 1 < b < p
-Perhitungan Kunci Publik:
-Alice menghitung: A =ga mod p
-Bob menghitung: B=gb mod p
-Pertukaran Kunci Publik: Alice mengirim A ke Bob, dan Bob mengirim B ke Alice melalui saluran publik.
-Perhitungan Shared Secret:
-Alice menghitung: sA=Ba mod p =(gb)a mod p=gab mod p
-Bob menghitung: sB=Ab mod p =(ga)b mod p=gab mod p
-Verifikasi: Kedua pihak memiliki shared secret yang sama: sA=sB=gab mod p
-3. Keamanan
-Keamanan protokol bergantung pada Discrete Logarithm Problem (DLP): Diberikan g, p, dan A=ga mod p, sangat sulit secara komputasional untuk menemukan nilai a.
+2. **Pembangkitan Kunci Privat**: 
+   - Alice memilih kunci privat acak $a$ dimana $1 < a < p$
+   - Bob memilih kunci privat acak $b$ dimana $1 < b < p$
+
+3. **Perhitungan Kunci Publik**:
+   - Alice menghitung: $A = g^a \bmod p$
+   - Bob menghitung: $B = g^b \bmod p$
+
+4. **Pertukaran Kunci Publik**: Alice mengirim $A$ ke Bob, dan Bob mengirim $B$ ke Alice melalui saluran publik.
+
+5. **Perhitungan Shared Secret**:
+   - Alice menghitung: $s_A = B^a \bmod p = (g^b)^a \bmod p = g^{ab} \bmod p$
+   - Bob menghitung: $s_B = A^b \bmod p = (g^a)^b \bmod p = g^{ab} \bmod p$
+
+6. **Verifikasi**: Kedua pihak memiliki shared secret yang sama: $s_A = s_B = g^{ab} \bmod p$
+
+### 2.3 Keamanan
+Keamanan protokol bergantung pada **Discrete Logarithm Problem (DLP)**: Diberikan $g$, $p$, dan $A = g^a \bmod p$, sangat sulit secara komputasional untuk menemukan nilai $a$.
 
 Meskipun Diffie-Hellman aman terhadap penyadapan pasif, protokol ini rentan terhadap serangan Man-in-the-Middle (MITM) jika tidak dikombinasikan dengan mekanisme autentikasi. Dalam serangan MITM, penyerang dapat mencegat dan memodifikasi kunci publik yang dipertukarkan, sehingga dapat mendekripsi komunikasi.
 
+---
 ## 3. Alat dan Bahan
 (- Python 3.x  
 - Visual Studio Code / editor lain  
@@ -45,16 +50,17 @@ Meskipun Diffie-Hellman aman terhadap penyadapan pasif, protokol ini rentan terh
 
 
 ## 4. Langkah Percobaan
-Membuat folder struktur praktikum/week7-diffie-hellman/src/ dan screenshots/.
-Mengimplementasikan class DiffieHellman dalam file src/deffie-hellman.py.
-Membuat implementasi dengan parameter publik (p=23, g=5).
-Menggunakan private key yang sudah ditentukan untuk Alice (a=92378234) dan Bob (b=23482342).
-Menjalankan simulasi pertukaran kunci dan menghitung shared secret.
-Memverifikasi bahwa shared secret Alice dan Bob sama.
-Menjalankan program dengan perintah python deffie-hellman.py.
-Mengambil screenshot hasil eksekusi program.
+1. Membuat folder struktur `praktikum/week7-diffie-hellman/src/` dan `screenshots/`.
+2. Mengimplementasikan class `DiffieHellman` dalam file `src/deffie-hellman.py`.
+3. Membuat implementasi dengan parameter publik ($p=23$, $g=5$).
+4. Menggunakan private key yang sudah ditentukan untuk Alice ($a=92378234$) dan Bob ($b=23482342$).
+5. Menjalankan simulasi pertukaran kunci dan menghitung shared secret.
+6. Memverifikasi bahwa shared secret Alice dan Bob sama.
+7. Menjalankan program dengan perintah `python deffie-hellman.py`.
+8. Mengambil screenshot hasil eksekusi program.
 
 ## 5. Source Code
+```python
 import random
 
 class DiffieHellman:
@@ -99,67 +105,121 @@ if __name__ == "__main__":
     print(f"Alice's Shared Secret: {alice_shared_secret}")
     print(f"Bob's Shared Secret: {bob_shared_secret}")
     assert alice_shared_secret == bob_shared_secret, "Shared secrets do not match!"
-
+```
 ## 6. Hasil dan Pembahasan
-Program berhasil memverifikasi bahwa kedua shared secret identik (sA=sB=18), yang membuktikan protokol Diffie-Hellman berfungsi dengan benar. Assertion tidak menghasilkan error, menandakan kunci bersama berhasil dibuat tanpa pernah mengirimkan private key melalui jaringan. Output:
-Hasil eksekusi program Caesar Cipher:
+### 6.1 Hasil Eksekusi
+Hasil eksekusi program menunjukkan implementasi protokol Diffie-Hellman yang berhasil:
 
+**Parameter Publik:**
+- Bilangan prima: $p = 23$
+- Generator: $g = 5$
+
+**Private Keys:**
+- Alice: $a = 92378234 \equiv 6 \pmod{23}$
+- Bob: $b = 23482342 \equiv 12 \pmod{23}$
+
+**Perhitungan Kunci Publik:**
+- Alice's Public Key: $A = g^a \bmod p = 5^6 \bmod 23 = 15625 \bmod 23 = 13$
+- Bob's Public Key: $B = g^b \bmod p = 5^{12} \bmod 23 = 244140625 \bmod 23 = 7$
+
+**Perhitungan Shared Secret:**
+- Alice's Shared Secret: 
+  $$s_A = B^a \bmod p = 7^6 \bmod 23 = 117649 \bmod 23 = 18$$
+  
+- Bob's Shared Secret: 
+  $$s_B = A^b \bmod p = 13^{12} \bmod 23 = 23298085122481 \bmod 23 = 18$$
+
+**Verifikasi:**
+$$s_A = s_B = 18$$
+
+Program berhasil memverifikasi bahwa kedua shared secret identik ($s_A = s_B = 18$), yang membuktikan protokol Diffie-Hellman berfungsi dengan benar. Assertion tidak menghasilkan error, menandakan kunci bersama berhasil dibuat tanpa pernah mengirimkan private key melalui jaringan.
+**Output:**
 ![alt text](image.png)
+### 6.2 Analisis Keamanan
+
+Meskipun protokol ini aman terhadap penyadapan pasif, terdapat beberapa kelemahan:
+
+#### 6.2.1 Man-in-the-Middle Attack (MITM)
+Tanpa autentikasi, penyerang (Eve) dapat mencegat komunikasi:
+- Eve mencegat $A$ dari Alice dan mengirim $A'$ ke Bob
+- Eve mencegat $B$ dari Bob dan mengirim $B'$ ke Alice
+- Eve menghitung dua shared secret: $s_{AE} = A^e \bmod p$ dan $s_{BE} = B^e \bmod p$
+- Eve dapat mendekripsi semua komunikasi
+
+#### 6.2.2 Small Subgroup Attack
+Jika generator $g$ tidak dipilih dengan benar atau berada dalam subgrup kecil, penyerang dapat mengeksploitasi ini untuk mengurangi ruang pencarian kunci secara signifikan.
+
+#### 6.2.3 Discrete Logarithm Problem
+Keamanan bergantung pada kesulitan menghitung logaritma diskrit. Dengan bilangan prima yang terlalu kecil (seperti $p=23$ dalam contoh), brute force menjadi feasible. Dalam praktik, $p$ harus minimal 2048 bit untuk keamanan yang memadai.
 
 ## 7. Jawaban Pertanyaan
-Pertanyaan 1: Mengapa Diffie-Hellman memungkinkan pertukaran kunci di saluran publik?
-Diffie-Hellman memungkinkan pertukaran kunci di saluran publik karena menggunakan konsep matematika one-way function berbasis masalah logaritma diskrit.
-Meskipun public key (A dan B) dikirim melalui saluran terbuka, sangat sulit secara komputasional untuk menghitung private key dari public key yang diketahui:
-- Mudah menghitung: A=ga mod p (forward direction)
-- Sangat sulit menghitung: a dari A,g,p (backward direction - Discrete Log Problem)
+**Pertanyaan 1: Mengapa Diffie-Hellman memungkinkan pertukaran kunci di saluran publik?**
+
+Diffie-Hellman memungkinkan pertukaran kunci di saluran publik karena menggunakan konsep matematika **one-way function** berbasis masalah logaritma diskrit. 
+
+Meskipun public key ($A$ dan $B$) dikirim melalui saluran terbuka, sangat sulit secara komputasional untuk menghitung private key dari public key yang diketahui:
+- Mudah menghitung: $A = g^a \bmod p$ (forward direction)
+- Sangat sulit menghitung: $a$ dari $A, g, p$ (backward direction - Discrete Log Problem)
+
 Prosesnya:
-1. Alice mengirim A = ga mod p
-2. Bob mengirim B = gb mod p
-3. Penyerang mengetahui g,p,A,B tetapi tidak dapat menghitung a atau b
-4. Alice menghitung: s = Ba mod p =(gb)a mod p = gab mod p
-5. Bob menghitung: s = Ab mod p =(ga)b mod p = gab mod p
-Kedua pihak mendapatkan shared secret yang sama: s = gab mod p
+1. Alice mengirim $A = g^a \bmod p$
+2. Bob mengirim $B = g^b \bmod p$
+3. Penyerang mengetahui $g, p, A, B$ tetapi tidak dapat menghitung $a$ atau $b$
+4. Alice menghitung: $s = B^a \bmod p = (g^b)^a \bmod p = g^{ab} \bmod p$
+5. Bob menghitung: $s = A^b \bmod p = (g^a)^b \bmod p = g^{ab} \bmod p$
 
-Pertanyaan 2: Apa kelemahan utama protokol Diffie-Hellman murni?
+Kedua pihak mendapatkan shared secret yang sama: $s = g^{ab} \bmod p$
+
+**Pertanyaan 2: Apa kelemahan utama protokol Diffie-Hellman murni?**
+
 Kelemahan utama protokol Diffie-Hellman murni adalah:
-Rentan terhadap Man-in-the-Middle (MITM): Tidak ada mekanisme autentikasi bawaan untuk memverifikasi identitas pihak yang berkomunikasi. Penyerang dapat mencegat dan memodifikasi public key.
-Tidak memberikan autentikasi: Protokol hanya menjamin kerahasiaan (confidentiality), bukan autentikasi atau integritas pesan. Alice tidak dapat memverifikasi bahwa dia berkomunikasi dengan Bob yang sebenarnya.
-Bergantung pada parameter yang kuat: Keamanan sangat bergantung pada pemilihan:
-Bilangan prima 
-p yang cukup besar (minimal 2048 bit) Generator yang tepat
-Private key yang benar-benar acak
-Computational cost: Operasi modular exponentiation dengan bilangan besar memerlukan komputasi yang intensif.
-Tidak ada forward secrecy sempurna: Jika private key terkompromikan, penyerang yang merekam komunikasi masa lalu dapat mendekripsinya.
 
-Pertanyaan 3: Bagaimana cara mencegah serangan MITM pada protokol ini?
+1. **Rentan terhadap Man-in-the-Middle (MITM)**: Tidak ada mekanisme autentikasi bawaan untuk memverifikasi identitas pihak yang berkomunikasi. Penyerang dapat mencegat dan memodifikasi public key.
+
+2. **Tidak memberikan autentikasi**: Protokol hanya menjamin kerahasiaan (confidentiality), bukan autentikasi atau integritas pesan. Alice tidak dapat memverifikasi bahwa dia berkomunikasi dengan Bob yang sebenarnya.
+
+3. **Bergantung pada parameter yang kuat**: Keamanan sangat bergantung pada pemilihan:
+   - Bilangan prima $p$ yang cukup besar (minimal 2048 bit)
+   - Generator $g$ yang tepat
+   - Private key yang benar-benar acak
+
+4. **Computational cost**: Operasi modular exponentiation dengan bilangan besar memerlukan komputasi yang intensif.
+
+5. **Tidak ada forward secrecy sempurna**: Jika private key terkompromikan, penyerang yang merekam komunikasi masa lalu dapat mendekripsinya.
+
+**Pertanyaan 3: Bagaimana cara mencegah serangan MITM pada protokol ini?**
+
 Beberapa cara untuk mencegah serangan MITM pada protokol Diffie-Hellman:
-1. Digital Signatures:
-Menandatangani public key dengan private key dari sistem kriptografi asimetris (RSA/ECDSA)
-Alice mengirim: 
-(A,SignSKA(A))
-Bob memverifikasi dengan public key Alice: 
-VerifyPKA(A,signature)
-2. Sertifikat Digital (PKI):
-Menggunakan Public Key Infrastructure
-Certificate Authority (CA) terpercaya menandatangani sertifikat
-Sertifikat mengikat identitas dengan public key
-3. Pre-shared Keys (PSK):
-Menggunakan kunci rahasia yang dibagikan sebelumnya melalui saluran aman
-Menggunakan HMAC untuk autentikasi: 
-HMACPSK(A)
-4. Station-to-Station (STS) Protocol:
-Variasi Diffie-Hellman dengan autentikasi
-Menambahkan digital signature dan enkripsi pada pertukaran kunci
-Formula: 
-Es(SignSK(gx,gy))
-5. Perfect Forward Secrecy (PFS):
-Menggunakan Ephemeral Diffie-Hellman (DHE/ECDHE)
-Menghasilkan pasangan kunci baru untuk setiap sesi
-Kompromisasi satu kunci tidak mempengaruhi sesi lainnya
-6. Authenticated Diffie-Hellman:
-Mengkombinasikan dengan protokol autentikasi seperti HMAC
-Formula verifikasi: 
-HMACk(A||B)=HMACk(gamodp||gbmodp)
+
+1. **Digital Signatures**: 
+   - Menandatangani public key dengan private key dari sistem kriptografi asimetris (RSA/ECDSA)
+   - Alice mengirim: $(A, \text{Sign}_{SK_A}(A))$
+   - Bob memverifikasi dengan public key Alice: $\text{Verify}_{PK_A}(A, \text{signature})$
+
+2. **Sertifikat Digital (PKI)**:
+   - Menggunakan Public Key Infrastructure
+   - Certificate Authority (CA) terpercaya menandatangani sertifikat
+   - Sertifikat mengikat identitas dengan public key
+
+3. **Pre-shared Keys (PSK)**:
+   - Menggunakan kunci rahasia yang dibagikan sebelumnya melalui saluran aman
+   - Menggunakan HMAC untuk autentikasi: $\text{HMAC}_{PSK}(A)$
+
+4. **Station-to-Station (STS) Protocol**:
+   - Variasi Diffie-Hellman dengan autentikasi
+   - Menambahkan digital signature dan enkripsi pada pertukaran kunci
+   - Formula: $E_s(\text{Sign}_{SK}(g^x, g^y))$
+
+5. **Perfect Forward Secrecy (PFS)**:
+   - Menggunakan **Ephemeral Diffie-Hellman (DHE/ECDHE)**
+   - Menghasilkan pasangan kunci baru untuk setiap sesi
+   - Kompromisasi satu kunci tidak mempengaruhi sesi lainnya
+
+6. **Authenticated Diffie-Hellman**:
+   - Mengkombinasikan dengan protokol autentikasi seperti HMAC
+   - Formula verifikasi: $\text{HMAC}_k(A || B) = \text{HMAC}_k(g^a \bmod p || g^b \bmod p)$
+
+---
 
 ## 8. Kesimpulan
 Praktikum ini berhasil mengimplementasikan dan mensimulasikan protokol Diffie-Hellman Key Exchange menggunakan Python. Protokol memungkinkan Alice dan Bob untuk membuat kunci rahasia bersama (s=18) melalui saluran publik tanpa mengirimkan kunci privat.

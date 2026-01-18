@@ -31,27 +31,34 @@ Logaritma Diskrit adalah masalah menemukan nilai x dalam persamaan a^x ≡ b (mo
 ---
 
 ## 4. Langkah Percobaan
-(Tuliskan langkah yang dilakukan sesuai instruksi.  
-Contoh format:
-1. Membuat file `caesar_cipher.py` di folder `praktikum/week2-cryptosystem/src/`.
-2. Menyalin kode program dari panduan praktikum.
-3. Menjalankan program dengan perintah `python caesar_cipher.py`.)
-
----
+1. Membuat struktur folder `praktikum/week3-modmath-gcd/` dengan subfolder `src/` dan `screenshots/`.
+2. Membuat file `modular_math.py` di folder `src/`.
+3. Mengimplementasikan fungsi aritmetika modular (penjumlahan, pengurangan, perkalian, eksponensiasi).
+4. Mengimplementasikan algoritma Euclidean untuk menghitung GCD.
+5. Mengimplementasikan Extended Euclidean Algorithm untuk mencari invers modular.
+6. Mengimplementasikan fungsi logaritma diskrit sederhana.
+7. Menjalankan program dengan perintah `python src/modular_math.py`.
+8. Mengambil screenshot hasil eksekusi.
+9. Melakukan commit ke repository Git dengan pesan "week3-modmath-gcd".
 
 ## 5. Source Code
-(Salin kode program utama yang dibuat atau dimodifikasi.  
-Gunakan blok kode:
-
+```python
 """
 Aritmatika Modular
 """
-def mod_add(a: int, b:int, n:int) -> int: return (a + b) % n
-def mod_sub(a: int, b:int, n:int) -> int: return (a - b) % n
-def mod_mul(a: int, b:int, n:int) -> int: return (a * b) % n
-def mod_expo(base: int, exp: int, n:int) -> int: return pow(base, exp, n)
+def mod_add(a: int, b:int, n:int) -> int: 
+    return (a + b) % n
 
-print("Aritmatika Modular: ")
+def mod_sub(a: int, b:int, n:int) -> int: 
+    return (a - b) % n
+
+def mod_mul(a: int, b:int, n:int) -> int: 
+    return (a * b) % n
+
+def mod_expo(base: int, exp: int, n:int) -> int: 
+    return pow(base, exp, n)
+
+
 print(f"7 + 5 mod 12 = {mod_add(7, 5, 12)}")
 print(f"7 - 5 mod 12 = {mod_sub(7, 5, 12)}")
 print(f"7 * 5 mod 12 = {mod_mul(7, 5, 12)}")
@@ -61,8 +68,6 @@ print(f"7 ^ 128 mod 13 = {mod_expo(7, 128, 13)}")
 """
 GCD & Algoritma Euclidean
 """
-print("-"*20)
-print("Greatest Common Divisor: ")
 def gcd(a:int, b:int) -> int:
     while b != 0:
         a, b = b, a % b
@@ -73,8 +78,6 @@ print(f"gcd(54, 24) = {gcd(54, 24)}")
 """
 Extended Euclidean Algorithm
 """
-print("-"*20)
-print("Extended Euclidean Algorithm: ")
 def egcd(a:int, b:int) -> int:
     if a == 0:
         return b, 0, 1
@@ -93,8 +96,6 @@ print(f"Invers 3 mod 11 = {modinv(3, 11)}")
 """
 Logaritma Diskrit
 """
-print("-"*20)
-print("Logaritma Diskrit: ")
 def discrete_log(a:int, b:int, n:int) -> int:
     for x in range(n):
         if pow(a, x, n) == b:
@@ -102,38 +103,44 @@ def discrete_log(a:int, b:int, n:int) -> int:
     return None
 
 print(f"3^x = 4 (mod 7), x = {discrete_log(3, 4, 7)}")
-)
-
----
+```
 
 ## 6. Hasil dan Pembahasan
+**Aritmetika Modular:**
+- `7 + 5 mod 12 = 0` → (12 % 12 = 0)
+- `7 - 5 mod 12 = 2` → (2 % 12 = 2)
+- `7 * 5 mod 12 = 11` → (35 % 12 = 11)
+- `7^128 mod 13 = 9` → Eksponensiasi modular efisien menggunakan algoritma bawaan Python
 
-Hasil eksekusi program Modular Math:
+**GCD:**
+- `gcd(54, 24) = 6` → Hasil sesuai ekspektasi, 6 adalah faktor pembagi terbesar dari 54 dan 24
+
+**Invers Modular:**
+- `Invers 3 mod 11 = 4` → Karena (3 × 4) mod 11 = 12 mod 11 = 1, maka 4 adalah invers dari 3 modulo 11
+
+**Logaritma Diskrit:**
+- `3^x ≡ 4 (mod 7), x = 4` → Karena 3^4 = 81, dan 81 mod 7 = 4
+
+Semua hasil sesuai dengan ekspektasi dan menunjukkan implementasi yang benar. Tidak ada error yang ditemukan selama eksekusi program.
 
 ![alt text](image.png)
 ![alt text](image-1.png)
 
 
 ## 7. Jawaban Pertanyaan
-1. Apa peran aritmetika modular dalam kriptografi modern?
+**1. Apa peran aritmetika modular dalam kriptografi modern?**
 
 Aritmetika modular adalah fondasi matematika dalam kriptografi modern. Dalam algoritma RSA, operasi enkripsi (c = m^e mod n) dan dekripsi (m = c^d mod n) menggunakan eksponensiasi modular. Dalam Diffie-Hellman, pertukaran kunci menggunakan operasi a^x mod p. Sifat "one-way" dari operasi modular (mudah dihitung tapi sulit dibalik) menjadi basis keamanan kriptografi kunci publik.
 
-2. Mengapa invers modular penting dalam algoritma kunci publik (misalnya RSA)?
+**2. Mengapa invers modular penting dalam algoritma kunci publik (misalnya RSA)?**
 
 Dalam RSA, invers modular digunakan untuk menghitung kunci privat (d) dari kunci publik (e) dengan persamaan e × d ≡ 1 (mod φ(n)). Tanpa invers modular, proses dekripsi tidak mungkin dilakukan. Keberadaan invers modular juga memastikan bahwa e dan φ(n) adalah coprime (gcd = 1), yang merupakan syarat keamanan RSA.
 
-3. Apa tantangan utama dalam menyelesaikan logaritma diskrit untuk modulus besar?
+**3. Apa tantangan utama dalam menyelesaikan logaritma diskrit untuk modulus besar?**
 
 Tantangan utama adalah kompleksitas komputasi yang eksponensial terhadap ukuran modulus. Algoritma brute force seperti yang diimplementasikan memiliki kompleksitas O(n), yang tidak feasible untuk modulus besar (misalnya 2048-bit). Algoritma terbaik saat ini seperti Index Calculus masih memerlukan waktu sub-eksponensial, membuat logaritma diskrit tetap menjadi masalah sulit yang menjadi dasar keamanan protokol kriptografi modern.
-
-
-
 ## 8. Kesimpulan
-(Tuliskan kesimpulan singkat (2–3 kalimat) berdasarkan percobaan.  )
-
----
-
+praktikum ini berhasil untuk menimplementasikan konsep konsep fundamental matematika kriptogafi
 ## 9. Daftar Pustaka
 (Cantumkan referensi yang digunakan.  
 Contoh:  
