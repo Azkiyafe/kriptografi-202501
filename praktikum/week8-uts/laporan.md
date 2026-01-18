@@ -1,11 +1,9 @@
 # Laporan Praktikum Kriptografi
-Minggu ke-: X  
-Topik: [judul praktikum]  
-Nama: [Nama Mahasiswa]  
-NIM: [NIM Mahasiswa]  
-Kelas: [Kelas]  
-
----
+Minggu ke-: 8  
+Topik: uts 
+Nama: Azkiya Fe Sabella  
+NIM: 230202802  
+Kelas: 5 IKKA  
 
 ## 1. Tujuan
 (Tuliskan tujuan pembelajaran praktikum sesuai modul.)
