@@ -1,0 +1,37 @@
+{
+  "difficulty": 6,
+  "chain": [
+    {
+      "index": 0,
+      "previous_hash": "0",
+      "data": "Genesis Block",
+      "timestamp": 1768723750.1064975,
+      "nonce": 0,
+      "hash": "7d2e05f40fb17290992c211040d8a3e10b5c122a13bdaf6308945bbcb1c67deb"
+    },
+    {
+      "index": 1,
+      "previous_hash": "7d2e05f40fb17290992c211040d8a3e10b5c122a13bdaf6308945bbcb1c67deb",
+      "data": "Transaksi A -> B: 10 koin",
+      "timestamp": 1768723750.1064975,
+      "nonce": 27316784,
+      "hash": "00000071b48f94decf9e171ad0e4f56604a8ec36ba33ba0222436bd09d9fef5d"
+    },
+    {
+      "index": 2,
+      "previous_hash": "00000071b48f94decf9e171ad0e4f56604a8ec36ba33ba0222436bd09d9fef5d",
+      "data": "Transaksi B -> C: 5 koin",
+      "timestamp": 1768723814.4876337,
+      "nonce": 780567,
+      "hash": "000000fcb3ee667760421d35f679627126a4bbfdc7a41031e4ce94adccc3a689"
+    },
+    {
+      "index": 3,
+      "previous_hash": "000000fcb3ee667760421d35f679627126a4bbfdc7a41031e4ce94adccc3a689",
+      "data": "Transaksi C -> A: 3 koin",
+      "timestamp": 1768723816.5180938,
+      "nonce": 8991109,
+      "hash": "000000d3e7e4737d6c20fac91fcb7f9e80306ba42d4c958824529682ea1237c4"
+    }
+  ]
+}
