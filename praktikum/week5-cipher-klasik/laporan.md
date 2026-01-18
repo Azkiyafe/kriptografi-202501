@@ -39,6 +39,89 @@ Cipher transposisi bekerja dengan cara mengatur ulang posisi karakter dalam plai
 7. Mengambil screenshot hasil eksekusi program.
 
 ## 5. Source Code
+**src/moduls/caesar_chiper.py**
+```python
+def encrypt(plaintext: str, key: int) -> str:
+    result = ""
+    for char in plaintext:
+        if char.isalpha():
+            shift = 65 if char.isupper() else 97
+            result += chr((ord(char) - shift + key) % 26 + shift)
+        else:
+            result += char
+
+    return result
+
+def decrypt(chipertext: str, key: int) -> str:
+    return encrypt(chipertext, -key)
+
+```
+
+**src/moduls/vigenere_chiper.py**
+```python
+def encrypt(plaintext: str, key: int) -> str:
+    result = []
+    key = key.lower()
+    key_index = 0
+    for char in plaintext:
+        if char.isalpha:
+            shift = ord(key[key_index % len(key)]) - 97
+            base = 65 if char.isupper() else 97
+            result.append(chr((ord(char) - base + shift) % 26 + base))
+            key_index += 1
+        else:
+            result.append(char)
+
+    return "".join(result)
+
+
+def decrypt(chipertext: str, key: int) -> str:
+    result = []
+    key = key.lower()
+    key_index = 0
+    for char in chipertext:
+        if char.isalpha:
+            shift = ord(key[key_index % len(key)]) - 97
+            base = 65 if char.isupper() else 97
+            result.append(chr((ord(char) - base - shift) % 26 + base))
+            key_index += 1
+        else:
+            result.append(char)
+
+    return "".join(result)
+
+```
+
+**src/moduls/transpose.py**
+```python
+def encrypt(plaintext: str, key: int) -> str:
+    chipertext = [''] * key
+    for col in range(key):
+        pointer = col
+        while pointer < len(plaintext):
+            chipertext[col] += plaintext[pointer]
+            pointer += key
+    return "".join(chipertext)
+
+def decrypt(chipertext: str, key: int) -> str:
+    num_of_cols = int(len(chipertext) / key + 0.9999)
+    num_of_rows = key
+    num_of_shaded_boxes = (num_of_cols * num_of_rows) - len(chipertext)
+    plaintext = [""] * num_of_cols
+    col = 0
+    row = 0
+    
+    for symbol in chipertext:
+        plaintext[col] += symbol
+        col += 1
+        if (col == num_of_cols) or (col == num_of_cols - 1 and row >= num_of_rows - num_of_shaded_boxes):
+            col = 0
+            row += 1
+    return "".join(plaintext)
+```
+
+**src/main.py**
+```python
 from moduls import caesar_chiper, vigenere_chiper, transpose
 
 def caesar() -> None:
@@ -76,6 +159,7 @@ if __name__ == "__main__":
     vigenere()
     print('-'*40)
     transpose_metod()
+```
 
 ## 6. Hasil dan Pembahasan
 Hasil eksekusi program menunjukkan implementasi yang berhasil untuk ketiga algoritma cipher klasik:
@@ -100,16 +184,16 @@ Hasil eksekusi program Caesar Cipher:
 ![alt text](image-1.png)
 
 ## 7. Jawaban Pertanyaan
-Pertanyaan 1: Apa kelemahan utama algoritma Caesar Cipher dan Vigenère Cipher?
+**Pertanyaan 1: Apa kelemahan utama algoritma Caesar Cipher dan Vigenère Cipher?**
+- Caesar Cipher: Hanya memiliki 25 kemungkinan kunci, sehingga mudah dipecahkan dengan brute force attack. Juga rentan terhadap analisis frekuensi karena pola substitusi yang konsisten.
+- Vigenère Cipher: Meskipun lebih kuat dari Caesar, tetap rentan terhadap analisis Kasiski dan analisis indeks kebetulan jika panjang kunci diketahui atau dapat ditebak.
 
-Caesar Cipher: Hanya memiliki 25 kemungkinan kunci, sehingga mudah dipecahkan dengan brute force attack. Juga rentan terhadap analisis frekuensi karena pola substitusi yang konsisten.
-Vigenère Cipher: Meskipun lebih kuat dari Caesar, tetap rentan terhadap analisis Kasiski dan analisis indeks kebetulan jika panjang kunci diketahui atau dapat ditebak.
-Pertanyaan 2: Mengapa cipher klasik mudah diserang dengan analisis frekuensi? Cipher klasik mempertahankan karakteristik statistik bahasa asli. Dalam bahasa Indonesia/Inggris, huruf tertentu (seperti 'E', 'A', 'I') muncul lebih sering. Analisis frekuensi dapat mengidentifikasi pola ini dalam ciphertext untuk memecahkan enkripsi.
+**Pertanyaan 2: Mengapa cipher klasik mudah diserang dengan analisis frekuensi?**
+Cipher klasik mempertahankan karakteristik statistik bahasa asli. Dalam bahasa Indonesia/Inggris, huruf tertentu (seperti 'E', 'A', 'I') muncul lebih sering. Analisis frekuensi dapat mengidentifikasi pola ini dalam ciphertext untuk memecahkan enkripsi.
 
-Pertanyaan 3: Bandingkan kelebihan dan kelemahan cipher substitusi vs transposisi.
-
-Cipher Substitusi: Kelebihan - mudah implementasi, cepat. Kelemahan - rentan analisis frekuensi, pola bahasa tetap terjaga.
-Cipher Transposisi: Kelebihan - mengacak posisi karakter, sulit analisis frekuensi sederhana. Kelemahan - struktur kata masih terlihat, rentan terhadap analisis pola transposisi.
+**Pertanyaan 3: Bandingkan kelebihan dan kelemahan cipher substitusi vs transposisi.**
+- Cipher Substitusi: Kelebihan - mudah implementasi, cepat. Kelemahan - rentan analisis frekuensi, pola bahasa tetap terjaga.
+- Cipher Transposisi: Kelebihan - mengacak posisi karakter, sulit analisis frekuensi sederhana. Kelemahan - struktur kata masih terlihat, rentan terhadap analisis pola transposisi.
 
 ## 8. Kesimpulan
 Praktikum ini berhasil mengimplementasikan tiga algoritma cipher klasik: Caesar, Vigenère, dan Transposisi. Semua algoritma bekerja dengan benar untuk enkripsi dan dekripsi. Cipher klasik memberikan pemahaman dasar tentang konsep kriptografi, namun memiliki kelemahan signifikan dalam keamanan modern sehingga tidak cocok untuk aplikasi yang memerlukan keamanan tinggi.

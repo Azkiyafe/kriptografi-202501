@@ -35,7 +35,8 @@ Algoritma modern ini menggunakan mode operasi seperti ECB (Electronic Codebook) 
 7. Mengambil screenshot hasil eksekusi masing-masing program.
 
 ## 5. Source Code
-des.py
+**src/des.py**
+```python
 from Crypto.Cipher import DES
 from Crypto.Random import get_random_bytes
 
@@ -49,8 +50,28 @@ print("Ciphertext:", ciphertext)
 decipher = DES.new(key, DES.MODE_ECB)
 decrypted = decipher.decrypt(ciphertext)
 print("Decrypted:", decrypted)
+```
 
-rsa.py
+**src/aes.py**
+```python
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+
+key = get_random_bytes(16)
+cipher = AES.new(key, AES.MODE_EAX)
+
+plaintext = b"Modern AES encryption in EAX mode"
+ciphertext, tag = cipher.encrypt_and_digest(plaintext)
+print("Ciphertext:", ciphertext)
+
+# decryption
+cipher_dec = AES.new(key, AES.MODE_EAX, nonce=cipher.nonce)
+decrypted = cipher_dec.decrypt(ciphertext)
+print("Decrypted:", decrypted.decode())
+```
+
+**src/rsa.py**
+```python
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP
 
@@ -66,23 +87,7 @@ print("Ciphertext:", ciphertext)
 decipher_rsa = PKCS1_OAEP.new(private_key)
 decrypted = decipher_rsa.decrypt(ciphertext)
 print("Decrypted:", decrypted.decode())
-
-aes.py
-from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
-
-key = get_random_bytes(16)
-cipher = AES.new(key, AES.MODE_EAX)
-
-plaintext = b"Modern AES encryption in EAX mode"
-ciphertext, tag = cipher.encrypt_and_digest(plaintext)
-print("Ciphertext:", ciphertext)
-
-# decryption
-cipher_dec = AES.new(key, AES.MODE_EAX, nonce=cipher.nonce)
-decrypted = cipher_dec.decrypt(ciphertext)
-print("Decrypted:", decrypted.decode())
-
+```
 ## 6. Hasil dan Pembahasan
 AES (Advanced Encryption Standard):
 - Plaintext: "Modern AES encryption in EAX mode"
@@ -105,35 +110,38 @@ RSA (Rivest-Shamir-Adleman):
 
 
 ## 7. Jawaban Pertanyaan
-Pertanyaan 1: Apa perbedaan mendasar antara DES, AES, dan RSA dalam hal kunci dan keamanan?
+**Pertanyaan 1: Apa perbedaan mendasar antara DES, AES, dan RSA dalam hal kunci dan keamanan?**
 
-DES: Algoritma simetris dengan kunci 56-bit efektif (64-bit dengan parity). Sudah tidak aman untuk standar modern karena rentan terhadap brute force attack. Menggunakan kunci yang sama untuk enkripsi dan dekripsi.
+- **DES**: Algoritma simetris dengan kunci 56-bit efektif (64-bit dengan parity). Sudah tidak aman untuk standar modern karena rentan terhadap brute force attack. Menggunakan kunci yang sama untuk enkripsi dan dekripsi.
 
-AES: Algoritma simetris dengan pilihan kunci 128, 192, atau 256 bit. Jauh lebih aman dari DES dengan kompleksitas algoritma yang tinggi. Menggunakan kunci yang sama untuk enkripsi dan dekripsi, namun dengan tingkat keamanan yang jauh lebih baik.
+- **AES**: Algoritma simetris dengan pilihan kunci 128, 192, atau 256 bit. Jauh lebih aman dari DES dengan kompleksitas algoritma yang tinggi. Menggunakan kunci yang sama untuk enkripsi dan dekripsi, namun dengan tingkat keamanan yang jauh lebih baik.
 
-RSA: Algoritma asimetris dengan panjang kunci umumnya 2048-4096 bit. Menggunakan sepasang kunci (publik dan privat). Lebih lambat dari algoritma simetris tetapi memecahkan masalah distribusi kunci. Keamanan berbasis pada kesulitan memfaktorkan bilangan prima besar.
+- **RSA**: Algoritma asimetris dengan panjang kunci umumnya 2048-4096 bit. Menggunakan sepasang kunci (publik dan privat). Lebih lambat dari algoritma simetris tetapi memecahkan masalah distribusi kunci. Keamanan berbasis pada kesulitan memfaktorkan bilangan prima besar.
 
-Pertanyaan 2: Mengapa AES lebih banyak digunakan dibanding DES di era modern?
+**Pertanyaan 2: Mengapa AES lebih banyak digunakan dibanding DES di era modern?**
 
 AES lebih banyak digunakan karena beberapa alasan:
+- Ukuran kunci yang lebih besar (128/192/256 bit) memberikan keamanan yang jauh lebih kuat dibanding DES (56 bit)
+- DES rentan terhadap serangan brute force dengan komputasi modern yang dapat memecahkan DES dalam waktu singkat
+- AES memiliki struktur algoritma yang lebih efisien dan fleksibel
+- AES adalah standar yang ditetapkan oleh NIST (National Institute of Standards and Technology) menggantikan DES
+- Performa AES lebih baik dengan dukungan hardware acceleration pada prosesor modern
 
-Ukuran kunci yang lebih besar (128/192/256 bit) memberikan keamanan yang jauh lebih kuat dibanding DES (56 bit)
-DES rentan terhadap serangan brute force dengan komputasi modern yang dapat memecahkan DES dalam waktu singkat
-AES memiliki struktur algoritma yang lebih efisien dan fleksibel
-AES adalah standar yang ditetapkan oleh NIST (National Institute of Standards and Technology) menggantikan DES
-Performa AES lebih baik dengan dukungan hardware acceleration pada prosesor modern
-Pertanyaan 3: Mengapa RSA dikategorikan sebagai algoritma asimetris, dan bagaimana proses pembangkitan kuncinya?
+**Pertanyaan 3: Mengapa RSA dikategorikan sebagai algoritma asimetris, dan bagaimana proses pembangkitan kuncinya?**
 
 RSA dikategorikan sebagai algoritma asimetris karena menggunakan dua kunci berbeda: kunci publik untuk enkripsi dan kunci privat untuk dekripsi. Proses pembangkitan kunci RSA:
 
-Pilih dua bilangan prima besar, p dan q
-Hitung n = p × q (modulus)
-Hitung φ(n) = (p-1) × (q-1) (Euler's totient function)
-Pilih bilangan e (eksponen publik) yang relatif prima dengan φ(n), biasanya 65537
-Hitung d (eksponen privat) sehingga (d × e) mod φ(n) = 1
-Kunci publik: (e, n)
-Kunci privat: (d, n)
+1. Pilih dua bilangan prima besar, p dan q
+2. Hitung n = p × q (modulus)
+3. Hitung φ(n) = (p-1) × (q-1) (Euler's totient function)
+4. Pilih bilangan e (eksponen publik) yang relatif prima dengan φ(n), biasanya 65537
+5. Hitung d (eksponen privat) sehingga (d × e) mod φ(n) = 1
+6. Kunci publik: (e, n)
+7. Kunci privat: (d, n)
+
 Keamanan RSA bergantung pada kesulitan memfaktorkan n menjadi p dan q untuk bilangan yang sangat besar.
+
+---
 
 ## 8. Kesimpulan
 Praktikum ini berhasil mengimplementasikan tiga algoritma cipher modern: DES, AES, dan RSA menggunakan library pycryptodome. AES dengan mode EAX memberikan keamanan dan autentikasi yang lebih baik dibanding DES. RSA sebagai algoritma asimetris memungkinkan enkripsi dengan kunci publik dan dekripsi dengan kunci privat, mengatasi masalah distribusi kunci pada algoritma simetris. Semua implementasi berjalan dengan benar dan menunjukkan perbedaan karakteristik antara cipher simetris dan asimetris.
@@ -147,7 +155,7 @@ Contoh:
 ---
 
 ## 10. Commit Log
-(Tuliskan bukti commit Git yang relevan.  
+Tuliskan bukti commit Git yang relevan.  
 Contoh:
 ```
 commit abc12345

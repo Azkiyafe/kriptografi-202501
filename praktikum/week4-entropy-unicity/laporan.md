@@ -39,8 +39,7 @@ Contoh format:
 6. Mengambil screenshot hasil eksekusi program
 
 ## 5. Source Code
-Salin kode program utama yang dibuat atau dimodifikasi.  
-Gunakan blok kode:
+```python
 import math
 
 def entropy(keyspace_size: int) -> float:
@@ -63,7 +62,7 @@ if __name__ == "__main__":
     print("-"*50)
     print(f"Waktu brute force Caesar Chiper (26 kunci) = {brute_force_time(26)} hari")
     print(f"Waktu brute force AES-128 = {brute_force_time(2**128)} hari")
-
+```
 ## 6. Hasil dan Pembahasan
 Hasil eksekusi program menunjukkan:
 
@@ -77,16 +76,20 @@ Hasil eksekusi program Caesar Cipher:
 
 ![alt text](image.png)
 ![alt text](image-1.png)
-)
+
 
 ---
 
 ## 7. Jawaban Pertanyaan
-Pertanyaan 1: Apa arti dari nilai entropy dalam konteks kekuatan kunci? Entropy dalam konteks kekuatan kunci menunjukkan tingkat ketidakpastian atau keacakan dari ruang kunci. Semakin tinggi nilai entropy, semakin banyak kemungkinan kunci yang ada, sehingga semakin sulit bagi penyerang untuk menebak kunci yang benar melalui serangan brute force.
+**Pertanyaan 1: Apa arti dari nilai entropy dalam konteks kekuatan kunci?**
+Entropy dalam konteks kekuatan kunci menunjukkan tingkat ketidakpastian atau keacakan dari ruang kunci. Semakin tinggi nilai entropy, semakin banyak kemungkinan kunci yang ada, sehingga semakin sulit bagi penyerang untuk menebak kunci yang benar melalui serangan brute force.
 
-Pertanyaan 2: Mengapa unicity distance penting dalam menentukan keamanan suatu cipher? Unicity distance penting karena memberikan informasi tentang panjang minimum ciphertext yang diperlukan untuk menentukan kunci secara unik. Jika unicity distance rendah, berarti penyerang membutuhkan sedikit data untuk memecahkan kunci, sehingga cipher tersebut kurang aman.
+**Pertanyaan 2: Mengapa unicity distance penting dalam menentukan keamanan suatu cipher?**
+Unicity distance penting karena memberikan informasi tentang panjang minimum ciphertext yang diperlukan untuk menentukan kunci secara unik. Jika unicity distance rendah, berarti penyerang membutuhkan sedikit data untuk memecahkan kunci, sehingga cipher tersebut kurang aman.
 
-Pertanyaan 3: Mengapa brute force masih menjadi ancaman meskipun algoritma sudah kuat? Brute force tetap menjadi ancaman karena: (1) kemajuan teknologi komputasi yang terus meningkat, (2) implementasi algoritma yang salah dapat mengurangi ruang kunci efektif, (3) kelemahan dalam manajemen kunci, dan (4) kemungkinan adanya backdoor atau kelemahan yang belum diketahui dalam algoritma.
+**Pertanyaan 3: Mengapa brute force masih menjadi ancaman meskipun algoritma sudah kuat?**
+Brute force tetap menjadi ancaman karena: (1) kemajuan teknologi komputasi yang terus meningkat, (2) implementasi algoritma yang salah dapat mengurangi ruang kunci efektif, (3) kelemahan dalam manajemen kunci, dan (4) kemungkinan adanya backdoor atau kelemahan yang belum diketahui dalam algoritma.
+
 ## 8. Kesimpulan
 Praktikum ini menunjukkan perbedaan signifikan antara algoritma kriptografi klasik dan modern dalam hal kekuatan kunci. Caesar Cipher dengan entropi rendah (4.7 bit) dan unicity distance yang kecil (1.33) sangat rentan terhadap serangan, sedangkan AES-128 dengan entropi 128 bit memberikan keamanan yang sangat tinggi terhadap brute force attack.
 
